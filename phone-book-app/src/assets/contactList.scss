@@ -1,0 +1,9 @@
+ul {
+    li {
+        transition: background-color 0.3s; 
+    }
+    
+    li:not(:first-child):hover {
+        background-color: #e6e6e6;
+    }
+}
