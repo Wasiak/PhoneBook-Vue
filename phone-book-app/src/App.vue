@@ -2,6 +2,18 @@
   <div id="app">
     <h1>{{ msg }}</h1>
     <div class="row">
+      <div class="col-sm-12">
+        <button 
+          class="btn btn-primary float-right mr-3"
+          v-on:click='setAddFormVisible'
+          v-if='!addFormVisible'>Add New Contact</button>
+          <button 
+          class="btn btn-primary float-right mr-3"
+          v-on:click='setAddFormHidden'
+          v-if='addFormVisible'>Cancel</button>
+      </div> 
+    </div>
+    <div class="row">
       <contact-list 
         class="col-sm-6"
         :contacts='contacts' 
@@ -9,9 +21,14 @@
         @removeContact='removeContact'></contact-list>
       <contact-details
         class="col-sm-6" 
-        v-if="this.activeContact !== null"
-        :contact='activeContact'></contact-details>
-      <add-contact @onAddContact='addContact'></add-contact>
+        v-if="activeContact !== null"
+        :contact='activeContact'
+        @onEditContact='editContact'></contact-details>
+      <add-contact 
+        v-if="addFormVisible"
+        @onAddContact='addContact'
+        :newContact='contactToEdit'
+        :editMode='editMode'></add-contact>
     </div>
   </div>
 </template>
@@ -31,6 +48,8 @@ export default {
   data () {
     return {
       msg: 'Welcome to Vue Phone Book',
+      addFormVisible: false,
+      editMode: false,
       contacts:  [
           {
             name: 'Joe',
@@ -55,19 +74,54 @@ export default {
             phone: 999000999
           }
         ],
-      activeContact: null
+      activeContact: null,
+      contactToEdit: {},
+      activeContactIndex: null
     }
   },
   methods: {
     setActiveContact(contact) {
+      this.addFormVisible = false;
       this.activeContact = contact;
+      this.activeContactIndex = this.contacts.indexOf(contact);
+      console.log('active contact index = ', this.activeContactIndex)
     },
+
     removeContact(contact) {
       let contactToRemoveIndex = this.contacts.indexOf(contact);
       this.contacts.splice(contactToRemoveIndex, 1);
     },
+
     addContact(contact) {
-      this.contacts.push(contact);
+      if (!this.editMode) {
+        this.contacts.push(contact);
+      } else {
+        console.log('cont to edit  = ', {...contact})
+        // this.contactToEdit = contact;
+        console.log('contact edited')
+        this.contacts[this.activeContactIndex] = contact;
+        console.log('contacts after edit = ', this.contacts)
+      }
+      this.setAddFormHidden();
+    },
+
+    setAddFormVisible() {
+      this.addFormVisible = true;
+      // this.setActiveContact(null);
+      this.activeContact = null;
+      this.contactToEdit = {};
+    },
+
+    setAddFormHidden() {
+      this.addFormVisible  = false;
+      this.contactToEdit = {};
+    },
+
+    editContact() {
+      this.contactToEdit = {...this.activeContact};
+      this.editMode = true;
+      this.addFormVisible = true;
+      this.activeContact = null;
     }
   }
 }

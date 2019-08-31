@@ -8,6 +8,7 @@
             <div class="detail-line" v-if="contact.address">Address: {{ contact.address }}</div>
             <div class="detail-line" v-if="contact.age">Age: {{ contact.age }}</div>
         </div>
+        <button class="btn btn-info" v-on:click='onEditClick'>Edit</button>
     </div>
 </template>
 
@@ -18,6 +19,11 @@ export default {
     data() {
         return {
             //
+        }
+    },
+    methods: {
+        onEditClick() {
+            this.$emit('onEditContact');
         }
     }
 }

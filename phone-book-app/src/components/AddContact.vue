@@ -1,24 +1,34 @@
 <template>
     <div>
-        <p>add contact</p>
-        <input v-model='newContact.name' type="text" placeholder="type name">
-        <input v-model='newContact.phone' type="text" placeholder="type phone number">
-        <button v-on:click='addContact' class="btn btn-primary">Add</button>
+        <p>{{ editMode ? 'Edit Contact' : 'Add Contact' }}</p>
+        <form>
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input v-model='newContact2.name' type="text" placeholder="type name">
+            </div>
+            <div class="from-group">
+                <label for="phone">Phone:</label>
+                <input v-model='newContact2.phone' type="text" placeholder="type phone number">
+            </div>
+            <button type='button' v-on:click='addContact' class="btn btn-success">Add</button>
+        </form>
     </div>
 </template>
 
 <script>
 export default {
     name: 'AddContact',
+    props: ['newContact', 'editMode'],
     data() {
         return {
-            newContact: {}
+            newContact2: this.newContact
         }
     },
     methods: {
         addContact() {
-            if (this.newContact.name && this.newContact.phone) {
-                this.$emit('onAddContact', this.newContact);
+            // console.log('add new contact = ', this.newContact)
+            if (this.newContact2.name && this.newContact2.phone) {
+                this.$emit('onAddContact', this.newContact2);
                 this.clearForm();
             } else {
                 console.log('fill name and phone!')
@@ -26,7 +36,7 @@ export default {
         },
 
         clearForm() {
-            this.newContact = {}
+            this.newContact2 = {}
         }
     }
 }
