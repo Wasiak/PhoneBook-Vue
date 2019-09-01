@@ -3,6 +3,9 @@
     <h1>{{ msg }}</h1>
     <div class="row">
       <div class="col-sm-12">
+        <search-bar 
+          :contacts='allContacts'
+          @onSearch='onSearch'></search-bar>
         <button 
           class="btn btn-primary float-right mr-3"
           v-on:click='setAddFormVisible'
@@ -37,20 +40,22 @@
 import ContactList from './components/ContactList';
 import ContactDetails from './components/ContactDetails';
 import AddContact from './components/AddContact';
+import SearchBar from './components/SearchBar';
 
 export default {
   name: 'app',
   components: {
     ContactList,
     ContactDetails,
-    AddContact
+    AddContact,
+    SearchBar
   },
   data () {
     return {
       msg: 'Welcome to Vue Phone Book',
       addFormVisible: false,
       editMode: false,
-      contacts:  [
+      contacts: [
           {
             name: 'Joe',
             phone: 123456789,
@@ -76,8 +81,39 @@ export default {
         ],
       activeContact: null,
       contactToEdit: {},
-      activeContactIndex: null
+      activeContactIndex: null,
+      //
+      allContacts: [
+          {
+            name: 'Joe',
+            phone: 123456789,
+            address: 'test street 6/23 Warsaw'
+          },
+          {
+            name: 'Tom',
+            phone: 555666777,
+            email: 'test@test.com',
+            address: 'elo street 3 NY',
+            age: 23
+          },
+          {
+            name: 'Jim',
+            phone: 666111000,
+            email: 'mail@test.com',
+            age: 45
+          },
+          {
+            name: 'Bob',
+            phone: 999000999
+          }
+        ],
     }
+  },
+  computed: {
+    // allContacts: function() {
+    //   return [...this.contacts]
+    // }
+    // here some pagination probably contactsToShow
   },
   methods: {
     setActiveContact(contact) {
@@ -99,10 +135,13 @@ export default {
         console.log('cont to edit  = ', {...contact})
         // this.contactToEdit = contact;
         console.log('contact edited')
-        this.contacts[this.activeContactIndex] = contact;
-        console.log('contacts after edit = ', this.contacts)
+        this.contacts[this.activeContactIndex] = {...contact};
+        console.log('contacts after edit = ', this.contacts);
+        // to force rerender
+        this.contacts = [...this.contacts];
       }
       this.setAddFormHidden();
+      this.editMode = false;
     },
 
     setAddFormVisible() {
@@ -122,6 +161,11 @@ export default {
       this.editMode = true;
       this.addFormVisible = true;
       this.activeContact = null;
+    },
+
+    onSearch(results) {
+      console.log('app.vue -> search results = ', results);
+      this.contacts = results;
     }
   }
 }
