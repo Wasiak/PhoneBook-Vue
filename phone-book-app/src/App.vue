@@ -1,39 +1,45 @@
 <template>
-  <div id="app">
+  <div id="app" :class='layout'>
     <h1>{{ msg }}</h1>
     <div class="row">
       <div class="col-sm-12">
-        <search-bar 
-          :contacts='allContacts'
-          @onSearch='onSearch'></search-bar>
+        <button 
+          :class="[layout === 'day' ? 'btn btn-dark float-left ml-3' : 'btn btn-light float-left ml-3']"
+          v-on:click='toggleLayout'>
+          change layout
+        </button>
+        
         <button 
           class="btn btn-primary float-right mr-3"
           v-on:click='setAddFormVisible'
           v-if='!addFormVisible'>Add New Contact</button>
-          <button 
+        <button 
           class="btn btn-primary float-right mr-3"
           v-on:click='setAddFormHidden'
           v-if='addFormVisible'>Cancel</button>
       </div> 
     </div>
-    <div class="row">
-      <contact-list 
-        class="col-sm-6"
-        :contacts='contacts'
-        :recordsOnPage='recordsOnPage'
-        @onContactSelect='setActiveContact'
-        @removeContact='removeContact'
-        @sortBy='sortList'></contact-list>
+    <div class="row justify-content-sm-center">
       <contact-details
-        class="col-sm-6" 
+        class="col-sm-10" 
         v-if="activeContact !== null"
         :contact='activeContact'
         @onEditContact='editContact'></contact-details>
       <add-contact 
+        class="col-sm-10"
         v-if="addFormVisible"
         @onAddContact='addContact'
         :newContact='contactToEdit'
         :editMode='editMode'></add-contact>
+      <contact-list 
+        class="col-sm-10"
+        :contacts='contacts'
+        :allContacts='allContacts'
+        :recordsOnPage='recordsOnPage'
+        @onContactSelect='setActiveContact'
+        @removeContact='removeContact'
+        @sortBy='sortList'
+        @onSearch='onSearch'></contact-list>
     </div>
   </div>
 </template>
@@ -43,6 +49,7 @@ import ContactList from './components/ContactList';
 import ContactDetails from './components/ContactDetails';
 import AddContact from './components/AddContact';
 import SearchBar from './components/SearchBar';
+import axios from 'axios';
 
 export default {
   name: 'app',
@@ -54,153 +61,32 @@ export default {
   },
   data () {
     return {
+      layout: 'day',
       msg: 'Welcome to Vue Phone Book',
       addFormVisible: false,
       editMode: false,
-      contacts: [
-          {
-            name: 'Joe',
-            surname: 'Smith',
-            phone: 123456789,
-            address: 'test street 6/23 Warsaw'
-          },
-          {
-            name: 'Tom',
-            surname: 'Bombadil',
-            phone: 555666777,
-            email: 'test@test.com',
-            age: 29,
-            gender: 'male',
-            region: 'Poland',
-            title: 'mr',
-            birthday: {
-              dmy: '29/04/1990'
-            }
-          },
-          {
-            name: 'Ηριδανός',
-            surname: 'δαν',
-            phone: 888
-          },
-          {
-            name: 'Jim',
-            surname: 'Jones',
-            phone: 666111000,
-            email: 'mail@test.com',
-            age: 45
-          },
-          {
-            name: 'Bob',
-            surname: 'Budowniczy',
-            phone: 999000999
-          },
-          {
-            name: 'Rareș',
-            surname: 'Rod',
-            phone: 987654321
-          },
-          {
-            name: 'δανόςΗρι',
-            surname: 'δανιΗ',
-            phone: 888
-          },
-          {
-            name: 'ριΗδανός',
-            surname: 'δανι',
-            phone: 888
-          },
-          {
-            name: 'Ángela',
-            surname: 'Zet',
-            phone: 45567
-          },
-        
-          {
-            name: 'جمانة',
-            surname: 'جمان',
-            phone: 890765
-          }
-        ],
+      contacts: [],
       activeContact: null,
       contactToEdit: {},
       activeContactIndex: null,
-      //
-      allContacts: [
-          {
-            name: 'Joe',
-            surname: 'Smith',
-            phone: 123456789,
-            address: 'test street 6/23 Warsaw'
-          },
-          {
-            name: 'Tom',
-            surname: 'Bombadil',
-            phone: 555666777,
-            email: 'test@test.com',
-            age: 29,
-            gender: 'male',
-            region: 'Poland',
-            title: 'mr',
-            birthday: {
-              dmy: '29/04/1990'
-            }
-          },
-          {
-            name: 'Ηριδανός',
-            surname: 'δαν',
-            phone: 888
-          },
-          {
-            name: 'Jim',
-            surname: 'Jones',
-            phone: 666111000,
-            email: 'mail@test.com',
-            age: 45
-          },
-          {
-            name: 'Bob',
-            surname: 'Budowniczy',
-            phone: 999000999
-          },
-          {
-            name: 'Rareș',
-            surname: 'Rod',
-            phone: 987654321
-          },
-          {
-            name: 'δανόςΗρι',
-            surname: 'δανιΗ',
-            phone: 888
-          },
-          {
-            name: 'ριΗδανός',
-            surname: 'δανι',
-            phone: 888
-          },
-          {
-            name: 'Ángela',
-            surname: 'Zet',
-            phone: 45567
-          },
-          {
-            name: 'جمانة',
-            surname: 'جمان',
-            phone: 890765
-          }
-        ],
-        //
-        sortedAscBy: {
-          name: false,
-          surname: false
-        },
-        recordsOnPage: 4
+      allContacts: [], 
+      sortedAscBy: {
+        name: false,
+        surname: false
+      },
+      recordsOnPage: 10
     }
   },
-  computed: {
-    // allContacts: function() {
-    //   return [...this.contacts]
-    // }
-    // here some pagination probably contactsToShow
+  mounted() {
+    axios.get('https://uinames.com/api/?ext&amount=100')
+      .then(response => {
+        this.allContacts = [...response.data];
+        this.contacts = [...response.data];
+      })
+      .catch(e => {
+        // this.errors.push(e)
+        console.log('error!!')
+      })
   },
   methods: {
     setActiveContact(contact) {
@@ -213,6 +99,7 @@ export default {
       let contactToRemoveIndex = this.allContacts.indexOf(contact);
       this.allContacts.splice(contactToRemoveIndex, 1);
       this.contacts = [...this.allContacts];
+      this.activeContact = null;
     },
 
     addContact(contact) {
@@ -230,6 +117,7 @@ export default {
       this.addFormVisible = true;
       this.activeContact = null;
       this.contactToEdit = {};
+      this.editMode = false;
     },
 
     setAddFormHidden() {
@@ -258,6 +146,20 @@ export default {
       }
       this.contacts = sortedList;
       this.sortedAscBy[field] = !this.sortedAscBy[field];
+    },
+
+    toggleLayout() {
+      switch (this.layout) {
+        case 'day':
+         this.layout = 'night';
+         break;
+        case 'night':
+          this.layout = 'day';
+          break;
+        default:
+          this.layout = 'day';
+      }
+      
     }
   }
 }

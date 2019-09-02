@@ -1,0 +1,26 @@
+#addContactContainer {
+    margin-bottom: 30px;
+
+    input[type=number]::-webkit-inner-spin-button, 
+    input[type=number]::-webkit-outer-spin-button { 
+        -webkit-appearance: none;
+        margin: 0; 
+    }
+
+    input[type=number] {
+        -moz-appearance:textfield;
+    }
+
+    .error-message {
+        background-color: #a61506;
+        text-align: center;
+        padding: 10px;
+        border-radius: 10px;
+        margin: 10px 0;
+
+        p {
+            color: #fff;
+            margin: auto;
+        }
+    }
+}

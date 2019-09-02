@@ -2,6 +2,24 @@
 
 $main-daily-text-color: #333;
 $main-night-text-color: #fff;
-h1 {
-    color: $main-daily-text-color;
+
+#app {
+    margin-top: 0 !important;
+    min-height: 100%;
+}
+
+#app.day {
+    background-color: #fff;
+
+    h1 {
+        color: $main-daily-text-color;
+    }
+}
+
+#app.night {
+    background-color: #333;
+
+    h1 {
+        color: $main-night-text-color;
+    }
 }

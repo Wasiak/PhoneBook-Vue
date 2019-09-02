@@ -27,7 +27,7 @@ export default {
     },
     computed: {
         fullName: function() {
-            return `${this.contact.title} ${this.contact.name} ${this.contact.surname}`;
+            return `${this.contact.title || ''} ${this.contact.name} ${this.contact.surname}`;
         }
     },
     methods: {
