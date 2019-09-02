@@ -1,14 +1,6 @@
 ul {
     margin-top: 30px;
 
-    li {
-        transition: background-color 0.3s; 
-    }
-    
-    li:not(:first-child):hover {
-        background-color: #e6e6e6;
-    }
-
     li:first-child {
         line-height: 1.5;
         font-weight: 600;

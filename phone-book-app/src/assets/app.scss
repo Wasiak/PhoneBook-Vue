@@ -6,20 +6,41 @@ $main-night-text-color: #fff;
 #app {
     margin-top: 0 !important;
     min-height: 100%;
+    padding: 30px 0 60px;
+
+    ul {
+        li {
+            transition: background-color 0.3s; 
+        }
+    }
 }
 
 #app.day {
     background-color: #fff;
+    color: $main-daily-text-color;
 
-    h1 {
-        color: $main-daily-text-color;
+    ul {
+        li:not(:first-child) {
+            background-color: rgb(221, 239, 255);
+        }
+
+        li:not(:first-child):hover {
+            background-color: #e6e6e6;
+        }
     }
 }
 
 #app.night {
     background-color: #333;
+    color: $main-night-text-color;
 
-    h1 {
-        color: $main-night-text-color;
+    ul {
+        li {
+            background-color: rgb(48, 51, 53);
+        }
+
+        li:not(:first-child):hover {
+            background-color: rgb(129, 125, 120);
+        }
     }
 }
