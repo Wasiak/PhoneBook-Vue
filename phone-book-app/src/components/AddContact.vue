@@ -3,32 +3,32 @@
         <h3>{{ editMode ? 'Edit Contact' : 'Add Contact' }}</h3>
         <form>
             <div class="form-group row">
-                <label class="col-sm-2 col-form-label" for="name">Name:</label>
-                <div class="col-sm-10">
+                <label class="col-2 col-form-label" for="name">Name:</label>
+                <div class="col-10">
                     <input class="form-control" v-model='newContact2.name' type="text" placeholder="type name">
                 </div>
             </div>
             <div class="form-group row">
-                <label class="col-sm-2 col-form-label" for="surname">Surname:</label>
-                <div class="col-sm-10">
+                <label class="col-2 col-form-label" for="surname">Surname:</label>
+                <div class="col-10">
                     <input class="form-control" v-model='newContact2.surname' type="text" placeholder="type surname">
                 </div>   
             </div>
             <div class="form-group row">
-                <label class="col-sm-2 col-form-label" for="title">Title:</label>
-                <div class="col-sm-10">
+                <label class="col-2 col-form-label" for="title">Title:</label>
+                <div class="col-10">
                     <input class="form-control" v-model='newContact2.title' type="text" placeholder="type title i.e. mr, mrs">
                 </div>
             </div>
             <div class="form-group row">
-                <label class="col-sm-2 col-form-label" for="phone">Phone:</label>
-                <div class="col-sm-10">
+                <label class="col-2 col-form-label" for="phone">Phone:</label>
+                <div class="col-10">
                     <input class="form-control" v-model='newContact2.phone' type="text" placeholder="type phone number">
                 </div>
             </div>
             <div class="form-group row">
-                <label class="col-sm-2 col-form-label" for="gender">Gender:</label>
-                <div class="col-sm-10">
+                <label class="col-2 col-form-label" for="gender">Gender:</label>
+                <div class="col-10">
                     <select class="form-control" v-model='newContact2.gender'>
                         <option value="male">Male</option>
                         <option value="female">Female</option>
@@ -36,20 +36,20 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label class="col-sm-2 col-form-label" for="region">Region:</label>
-                <div class="col-sm-10">
+                <label class="col-2 col-form-label" for="region">Region:</label>
+                <div class="col-10">
                     <input class="form-control" v-model='newContact2.region' type="text" placeholder="type region">
                 </div>
             </div>
             <div class="form-group row">
-                <label class="col-sm-2 col-form-label" for="age">Age:</label>
-                <div class="col-sm-10">
+                <label class="col-2 col-form-label" for="age">Age:</label>
+                <div class="col-10">
                     <input min="0" step="1" class="form-control" v-model='newContact2.age' type="number" placeholder="type age">
                 </div>
             </div>
             <div class="form-group row">
-                <label class="col-sm-2 col-form-label" for="email">Email:</label>
-                <div class="col-sm-10">
+                <label class="col-2 col-form-label" for="email">Email:</label>
+                <div class="col-10">
                     <input class="form-control" v-model='newContact2.email' placeholder="type email">
                 </div>
             </div>

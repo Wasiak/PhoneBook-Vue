@@ -1,26 +1,26 @@
 <template>
     <div class="row">
-        <div class="col-sm-12">
+        <div class="col-12">
             <h1>List</h1>
             <div v-if='visibleRecords && visibleRecords.length'>
                 <div class="row pl-3">
                     <search-bar 
-                        class="col-sm-6"
+                        class="col-sm-6 col-12"
                         :contacts='allContacts'
                         @onSearch='onSearchHandler'></search-bar>
-                    <div class="col-sm-2 float-right"><button class="btn btn-secondary" v-on:click='prevPage'>Prev Page</button></div>
-                    <div class="col-sm-2 float-right"><p>{{ this.activePage }} / {{ this.pagesNumber }}</p></div>
-                    <div class="col-sm-2 float-right"><button class="btn btn-secondary" v-on:click='nextPage'>Next Page</button></div>
+                    <div class="col-sm-2 col-4 float-right"><button class="btn btn-secondary" v-on:click='prevPage'>Prev Page</button></div>
+                    <div class="col-sm-2 col-4 float-right"><p>{{ this.activePage }} / {{ this.pagesNumber }}</p></div>
+                    <div class="col-sm-2 col-4 float-right"><button class="btn btn-secondary" v-on:click='nextPage'>Next Page</button></div>
                 </div>
                 <div class="row">
                     <div class="col-sm-12">
                         <ul class="list-group">
                             <li>
                                 <div class="row">
-                                    <div class="col-sm-1"></div>
-                                    <div v-on:click='sort("name")' class="col-sm-4">Name</div>
-                                    <div v-on:click='sort("surname")' class="col-sm-4">Surname</div>
-                                    <div class="col-sm-3">Phone</div>
+                                    <div class="col-1"></div>
+                                    <div v-on:click='sort("name")' class="col-4">Name</div>
+                                    <div v-on:click='sort("surname")' class="col-4">Surname</div>
+                                    <div class="col-3">Phone</div>
                                 </div>
                             </li>
                             <li class="list-group-item" v-for='(contact, index) in visibleRecords' 

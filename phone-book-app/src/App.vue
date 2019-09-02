@@ -32,7 +32,7 @@
         :newContact='contactToEdit'
         :editMode='editMode'></add-contact>
       <contact-list 
-        class="col-sm-10"
+        class="col-sm-10 col-12"
         :contacts='contacts'
         :allContacts='allContacts'
         :recordsOnPage='recordsOnPage'
