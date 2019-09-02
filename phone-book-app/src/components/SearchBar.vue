@@ -22,9 +22,11 @@ export default {
         },
 
         search() {
-            console.log('search bar contacts = ', this.contacts)
-            let filteredData = this.contacts.filter(contact => contact.name.toLowerCase().includes(this.searchTerm.toLowerCase()));
-            console.log('search bar, search func; search term = ', this.searchTerm);
+            let filteredData = this.contacts.filter(contact => {
+                return contact.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+                    contact.surname.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+                    contact.phone.toString().includes(this.searchTerm.toLowerCase());
+            });
             this.onSearch(filteredData);
         }
     }

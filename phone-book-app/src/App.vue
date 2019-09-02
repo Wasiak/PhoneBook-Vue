@@ -19,9 +19,11 @@
     <div class="row">
       <contact-list 
         class="col-sm-6"
-        :contacts='contacts' 
+        :contacts='contacts'
+        :recordsOnPage='recordsOnPage'
         @onContactSelect='setActiveContact'
-        @removeContact='removeContact'></contact-list>
+        @removeContact='removeContact'
+        @sortBy='sortList'></contact-list>
       <contact-details
         class="col-sm-6" 
         v-if="activeContact !== null"
@@ -58,25 +60,65 @@ export default {
       contacts: [
           {
             name: 'Joe',
+            surname: 'Smith',
             phone: 123456789,
             address: 'test street 6/23 Warsaw'
           },
           {
             name: 'Tom',
+            surname: 'Bombadil',
             phone: 555666777,
             email: 'test@test.com',
-            address: 'elo street 3 NY',
-            age: 23
+            age: 29,
+            gender: 'male',
+            region: 'Poland',
+            title: 'mr',
+            birthday: {
+              dmy: '29/04/1990'
+            }
+          },
+          {
+            name: 'Ηριδανός',
+            surname: 'δαν',
+            phone: 888
           },
           {
             name: 'Jim',
+            surname: 'Jones',
             phone: 666111000,
             email: 'mail@test.com',
             age: 45
           },
           {
             name: 'Bob',
+            surname: 'Budowniczy',
             phone: 999000999
+          },
+          {
+            name: 'Rareș',
+            surname: 'Rod',
+            phone: 987654321
+          },
+          {
+            name: 'δανόςΗρι',
+            surname: 'δανιΗ',
+            phone: 888
+          },
+          {
+            name: 'ριΗδανός',
+            surname: 'δανι',
+            phone: 888
+          },
+          {
+            name: 'Ángela',
+            surname: 'Zet',
+            phone: 45567
+          },
+        
+          {
+            name: 'جمانة',
+            surname: 'جمان',
+            phone: 890765
           }
         ],
       activeContact: null,
@@ -86,27 +128,72 @@ export default {
       allContacts: [
           {
             name: 'Joe',
+            surname: 'Smith',
             phone: 123456789,
             address: 'test street 6/23 Warsaw'
           },
           {
             name: 'Tom',
+            surname: 'Bombadil',
             phone: 555666777,
             email: 'test@test.com',
-            address: 'elo street 3 NY',
-            age: 23
+            age: 29,
+            gender: 'male',
+            region: 'Poland',
+            title: 'mr',
+            birthday: {
+              dmy: '29/04/1990'
+            }
+          },
+          {
+            name: 'Ηριδανός',
+            surname: 'δαν',
+            phone: 888
           },
           {
             name: 'Jim',
+            surname: 'Jones',
             phone: 666111000,
             email: 'mail@test.com',
             age: 45
           },
           {
             name: 'Bob',
+            surname: 'Budowniczy',
             phone: 999000999
+          },
+          {
+            name: 'Rareș',
+            surname: 'Rod',
+            phone: 987654321
+          },
+          {
+            name: 'δανόςΗρι',
+            surname: 'δανιΗ',
+            phone: 888
+          },
+          {
+            name: 'ριΗδανός',
+            surname: 'δανι',
+            phone: 888
+          },
+          {
+            name: 'Ángela',
+            surname: 'Zet',
+            phone: 45567
+          },
+          {
+            name: 'جمانة',
+            surname: 'جمان',
+            phone: 890765
           }
         ],
+        //
+        sortedAscBy: {
+          name: false,
+          surname: false
+        },
+        recordsOnPage: 4
     }
   },
   computed: {
@@ -119,34 +206,28 @@ export default {
     setActiveContact(contact) {
       this.addFormVisible = false;
       this.activeContact = contact;
-      this.activeContactIndex = this.contacts.indexOf(contact);
-      console.log('active contact index = ', this.activeContactIndex)
+      this.activeContactIndex = this.allContacts.indexOf(contact);
     },
 
     removeContact(contact) {
-      let contactToRemoveIndex = this.contacts.indexOf(contact);
-      this.contacts.splice(contactToRemoveIndex, 1);
+      let contactToRemoveIndex = this.allContacts.indexOf(contact);
+      this.allContacts.splice(contactToRemoveIndex, 1);
+      this.contacts = [...this.allContacts];
     },
 
     addContact(contact) {
       if (!this.editMode) {
-        this.contacts.push(contact);
+        this.allContacts.push(contact);
       } else {
-        console.log('cont to edit  = ', {...contact})
-        // this.contactToEdit = contact;
-        console.log('contact edited')
-        this.contacts[this.activeContactIndex] = {...contact};
-        console.log('contacts after edit = ', this.contacts);
-        // to force rerender
-        this.contacts = [...this.contacts];
+        this.allContacts.splice(this.activeContactIndex, 1, {...contact})
       }
+      this.contacts = [...this.allContacts];
       this.setAddFormHidden();
       this.editMode = false;
     },
 
     setAddFormVisible() {
       this.addFormVisible = true;
-      // this.setActiveContact(null);
       this.activeContact = null;
       this.contactToEdit = {};
     },
@@ -164,8 +245,19 @@ export default {
     },
 
     onSearch(results) {
-      console.log('app.vue -> search results = ', results);
       this.contacts = results;
+    },
+
+    sortList(field) {
+      // when no search, sort whole array and then make new pagination
+      // when search is performed sort only search results and make new pagination for it
+      let listToSort = this.contacts.length === this.allContacts.length ? [...this.allContacts] : [...this.contacts]; 
+      let sortedList = listToSort.sort((a, b) => a[field].localeCompare(b[field]));
+      if (this.sortedAscBy[field]) {
+        sortedList = sortedList.reverse();
+      }
+      this.contacts = sortedList;
+      this.sortedAscBy[field] = !this.sortedAscBy[field];
     }
   }
 }
