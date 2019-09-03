@@ -61,6 +61,7 @@ export default {
   },
   data () {
     return {
+      url: 'http://localhost:8090',
       layout: 'day',
       msg: 'Welcome to Vue Phone Book',
       addFormVisible: false,
@@ -78,13 +79,12 @@ export default {
     }
   },
   mounted() {
-    axios.get('https://uinames.com/api/?ext&amount=100')
+    axios.get(`${this.url}/allContacts`)
       .then(response => {
         this.allContacts = [...response.data];
         this.contacts = [...response.data];
       })
       .catch(e => {
-        // this.errors.push(e)
         console.log('error!!')
       })
   },
@@ -137,8 +137,6 @@ export default {
     },
 
     sortList(field) {
-      // when no search, sort whole array and then make new pagination
-      // when search is performed sort only search results and make new pagination for it
       let listToSort = this.contacts.length === this.allContacts.length ? [...this.allContacts] : [...this.contacts]; 
       let sortedList = listToSort.sort((a, b) => a[field].localeCompare(b[field]));
       if (this.sortedAscBy[field]) {
